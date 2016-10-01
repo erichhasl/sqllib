@@ -16,6 +16,21 @@ class Database:
             return
         return Table(tables[0][0], self.db)
 
+    def create_table(self, name, columns):
+        """
+        Creates a table in this database
+
+        Arguments:
+        name -- name of the new table
+        columns -- list of strings or one string of pattern "key OPTION, ..."
+        """
+        if type(columns) == list:
+            columns = ",".join(columns)
+        cmd = "CREATE TABLE {name} ({columns})".format(name=name,
+                                                       columns=columns)
+        self.db.query(cmd)
+        self.db.commit()
+
 
 class Table:
 
