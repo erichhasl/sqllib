@@ -42,25 +42,29 @@ class Table:
         self.db.query(cmd)
         self.db.commit()
 
-    def select(self, columns=None, conditions=None):
+    def select(self, columns=None, conditions=None, distinct=False):
         """
         Selects the given columns from the table filtered by the conditions
 
         Keyword arguments:
         columns -- string of pattern: 'key, ..." or list of keys (Default: *)
         conditions -- string of pattern: 'key=value AND ...' (Default: nothing)
+        distinct -- wether to show only distinct matches (Default: False)
         """
         if not columns:
             columns = "*"
         elif type(columns) == list:
             columns = ",".join(columns)
+
         if not conditions:
-            cmd = "SELECT {columns} FROM {name}"\
-                .format(name=self.name,
+            cmd = "SELECT {distinct} {columns} FROM {name}"\
+                .format(distinct="DISTINCT" if distinct else "",
+                        name=self.name,
                         columns=columns)
         else:
-            cmd = "SELECT {columns} FROM {name} WHERE {conditions}"\
-                .format(name=self.name,
+            cmd = "SELECT {distinct} {columns} FROM {name} WHERE {conditions}"\
+                .format(distinct="DISTINCT" if distinct else "",
+                        name=self.name,
                         columns=columns,
                         conditions=conditions)
         return(self.db.query(cmd))
