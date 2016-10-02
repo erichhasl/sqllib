@@ -8,6 +8,14 @@ class Database:
         self.db = connection.SQLConnection("error")
 
     def get_table(self, name):
+        """
+        Get the table with the given name from the database
+
+        Arguments:
+        name -- name of the table
+
+        Returns: table object pointing to the given table
+        """
         tables = self.db.query("""SELECT name FROM sqlite_master
                                    WHERE type='table'
                                    AND name='{0}'""".format(name))
